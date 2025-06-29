@@ -1,0 +1,171 @@
+:root {
+  --bg-dark: #1e1e24;
+  --container-dark: #2c2f33;
+  --border-light: #3c3f45;
+  --text-light: #f0f0f0;
+  --highlight: #00ff8c;
+}
+
+/* Fondo general */
+body,
+.plotly-editor,
+.editor_controls {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Paneles principales */
+.plotly-editor .sidebar,
+.plotly-editor .panel {
+  background-color: var(--container-dark) !important;
+  color: var(--text-light) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+/* Secciones */
+.editor_controls .section {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+}
+
+/* Título de secciones */
+.editor_controls .fold__top {
+  min-height: 30px !important;
+  background-color: var(--container-dark) !important;
+  color: var(--text-light) !important;
+}
+
+/* Inputs */
+.editor_controls input,
+.editor_controls select,
+.editor_controls textarea,
+.plotly-editor input,
+.plotly-editor select,
+.plotly-editor textarea {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+/* Inputs numéricos */
+.editor_controls .numeric-input__number {
+  width: 100px !important;
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+/* Botones */
+button,
+.plotly-editor button,
+input[type="button"],
+input[type="submit"] {
+  background-color: var(--container-dark) !important;
+  color: var(--text-light) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+button:hover,
+.plotly-editor button:hover {
+  background-color: #1a1a1f !important;
+  color: var(--highlight) !important;
+}
+
+/* Selects */
+select {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+/* Collapsibles */
+.collapsible {
+  background-color: #2a2d34 !important;
+  color: white !important;
+  cursor: pointer;
+  margin-bottom: 5px;
+  width: 100%;
+  outline: none;
+  font-size: 15px;
+  border-bottom: 1px solid var(--border-light);
+  text-align: left;
+}
+
+.collapsible:hover {
+  background-color: #3a3d44 !important;
+}
+
+.collapsible:before {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.collapsible.active:before {
+  content: "\2212";
+}
+
+.collapsible:not(:has(div)) {
+  display: none;
+}
+
+.collapsible > div {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #1a1a1f;
+  color: var(--text-light);
+  border: 1px solid var(--border-light);
+}
+
+.collapsible.active > div {
+  max-height: fit-content;
+}
+
+/* Trace grid */
+.editor_controls .trace-grid {
+  overflow-y: auto;
+  max-height: 75vh;
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  border-top: var(--border-light);
+  overflow-x: hidden;
+}
+
+.editor_controls .trace-grid__column {
+  border-right: 1px solid var(--border-light) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  background-color: var(--container-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.editor_controls .trace-grid__column__header {
+  background-color: var(--bg-dark) !important;
+  color: var(--text-light) !important;
+  border-top: none;
+}
+
+.editor_controls .trace-grid__column:not(:first-of-type)::before {
+  border-left: none;
+}
+
+/* Área del gráfico */
+.plotly_editor_plot {
+  overflow-x: hidden;
+  background-color: var(--bg-dark) !important;
+}
+
+/* Ocultar secciones vacías */
+.editor_controls .section:has(>div[style*="display: none"]) {
+  display: none;
+}
+
+/* Etiquetas */
+label,
+.plotly-editor label {
+  color: var(--text-light) !important;
+}
