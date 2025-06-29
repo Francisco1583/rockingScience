@@ -1,7 +1,9 @@
 import dash_chart_editor as dce
-from dash import Dash, html, dcc, callback, Output, Input
+from dash import Dash, html, dcc, callback, Output, Input, State, no_update
 import pandas as pd
 import io
+import base64
+import datetime
 
 app = Dash(__name__, external_scripts=["https://cdn.plot.ly/plotly-2.18.2.min.js"])
 
@@ -14,8 +16,7 @@ Miércoles,23,1008,58
 Jueves,25,1013,53
 Viernes,26,1011,50
 Sábado,27,1009,48
-Domingo,28,1014,46
-"""
+Domingo,28,1014,46"""
 df = pd.read_csv(io.StringIO(data_csv))
 dataset = df.to_dict("list")
 
