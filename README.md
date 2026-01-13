@@ -1,3 +1,17 @@
+﻿# Rocket App
+
+Quickstart
+```
+pip install -e .
+python change_datasets.py
+```
+
+Notes
+- The UI uses dummy telemetry until hardware integration is wired.
+- The package lives in `rocket_app/` and is importable as `rocket_app`.
+
+---
+
 # Dash Chart Editor
 
 Dash Chart Editor is a Dash component wrapper for the [Plotly React Chart Editor](https://github.com/plotly/react-chart-editor) package, enabling you to use an editor panel for Plotly charts in your Dash app.
@@ -168,7 +182,3 @@ Access this documentation in your Python terminal with:
 - traceOptions (boolean | number | string | dict | list; optional):
     List of trace options to display.
  ``` 
-
-
-
-

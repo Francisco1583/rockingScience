@@ -9,3 +9,4 @@ include dash_chart_editor/package-info.json
 include README.md
 include LICENSE
 include package.json
+recursive-include rocket_app/assets *
