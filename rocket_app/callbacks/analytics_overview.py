@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import Input, Output, State, dcc, html, no_update
 import pandas as pd
-import plotly.express as px
+import plotly.graph_objects as go
 
 from rocket_app.data.csv_loader import load_dataframe_from_upload
 from rocket_app.data.dummy import DEFAULT_ANALYTICS_DATA, DEFAULT_ANALYTICS_STATE
@@ -57,32 +57,61 @@ def _overview_cards(df, time_col):
     if len(df.columns) < 2:
         raise ValueError("Analytics Overview requires at least two columns.")
 
-    numeric_cols = df.select_dtypes(include="number").columns.tolist()
-    time_col_name = df.columns[0]
-    if time_col_name not in numeric_cols:
+    time_values = pd.to_numeric(df[time_col], errors="coerce")
+    if time_values.dropna().empty:
         raise ValueError("Analytics Overview requires numeric time column.")
-    y_cols = [col for col in numeric_cols if col != time_col_name]
-    if not y_cols:
-        raise ValueError("Analytics Overview requires numeric columns to plot.")
 
     cards = []
-    for col in y_cols:
-        fig = px.line(df, x=df.columns[0], y=col)
-        fig.update_layout(
-            margin=dict(l=20, r=20, t=30, b=20),
-            xaxis=dict(title=_label_from_column(df.columns[0])),
-            yaxis=dict(title=_label_from_column(col)),
-            height=300,
+    for col in df.columns[1:]:
+        values = pd.to_numeric(df[col], errors="coerce")
+        plot_df = pd.DataFrame({time_col: time_values, col: values}).dropna()
+        if len(plot_df) < 2:
+            continue
+
+        time_array = plot_df[time_col].tolist()
+        value_array = plot_df[col].tolist()
+
+        fig = go.Figure(
+            go.Scatter(
+                x=time_array,
+                y=value_array,
+                mode="lines",
+                line=dict(width=2),
+            )
         )
+        fig.update_layout(
+            margin=dict(l=50, r=20, t=30, b=40),
+            xaxis=dict(title=_label_from_column(time_col), autorange=True),
+            yaxis=dict(title=_label_from_column(col), autorange=True),
+            height=300,
+            autosize=False,
+            dragmode="pan",
+        )
+
         cards.append(
             html.Div(
                 className="overview-row",
                 children=[
                     html.Div(_label_from_column(col), className="overview-title"),
-                    dcc.Graph(
-                        figure=fig,
-                        config={"displayModeBar": False},
-                        className="overview-graph",
+                    html.Div(
+                        dcc.Graph(
+                            figure=fig,
+                            config={
+                                "scrollZoom": True,
+                                "displayModeBar": True,
+                                "displaylogo": False,
+                                "modeBarButtonsToRemove": [],
+                            },
+                            className="overview-graph",
+                        ),
+                        style={
+                            "overflowX": "auto",
+                            "overflowY": "auto",
+                            "maxHeight": "320px",
+                            "maxWidth": "100%",
+                            "border": "1px solid #2a2a2a",
+                            "borderRadius": "6px",
+                        },
                     ),
                 ],
             )

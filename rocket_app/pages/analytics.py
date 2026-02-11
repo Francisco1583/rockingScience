@@ -23,7 +23,6 @@ def layout():
                             html.Div(
                                 id="analytics-overview",
                                 className="overview-scroll",
-                                style={"overflowY": "auto", "maxHeight": "75vh"},
                                 children=[],
                             )
                         ],
