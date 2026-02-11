@@ -1,22 +1,8 @@
-﻿from dash import dcc, html
+from dash import dcc, html
+import dash_bootstrap_components as dbc
 import dash_chart_editor as dce
 
-
-
-def upload_box():
-    return dcc.Upload(
-        id="upload-data",
-        className="upload-area",
-        multiple=False,
-        accept=".csv,.xls,.xlsx",
-        children=html.Div(
-            className="upload-content",
-            children=[
-                html.I(className="bi bi-cloud-arrow-up-fill", style={"fontSize": "30px"}),
-                html.Span("Drag and drop your CSV or select a file."),
-            ],
-        ),
-    )
+from rocket_app.components import upload_box, upload_status
 
 
 def layout():
@@ -24,26 +10,48 @@ def layout():
         className="analytics-page",
         children=[
             html.H2("Telemetry Analytics Studio", className="page-title"),
-            upload_box(),
-            html.Div(id="output-data-upload", className="upload-status"),
-            html.Div(
-                className="analytics-graph",
+            upload_box("upload-data", "Drag and drop your CSV or select a file."),
+            upload_status("output-data-upload"),
+            dcc.Tabs(
+                id="analytics-tabs",
+                value="overview",
                 children=[
-                    dcc.Graph(
-                        id="analytics-graph",
-                        config={"displayModeBar": False},
-                        figure={},
-                    )
-                ],
-            ),
-            html.Div(
-                className="chart-editor-shell",
-                children=[
-                    dce.DashChartEditor(
-                        id="chartEditor",
-                        dataSources={},
-                        style={"height": "650px", "width": "100%"},
-                    )
+                    dcc.Tab(
+                        label="Overview",
+                        value="overview",
+                        children=[
+                            html.Div(
+                                id="analytics-overview",
+                                className="overview-scroll",
+                                style={"overflowY": "auto", "maxHeight": "75vh"},
+                                children=[],
+                            )
+                        ],
+                    ),
+                    dcc.Tab(
+                        label="Editor",
+                        value="editor",
+                        children=[
+                            html.Div(
+                                className="chart-editor-shell",
+                                children=[
+                                    dce.DashChartEditor(
+                                        id="chartEditor",
+                                        dataSources={},
+                                        style={"height": "620px", "width": "100%"},
+                                    ),
+                                    html.Div(
+                                        className="editor-actions",
+                                        children=dbc.Button(
+                                            "Apply Changes",
+                                            id="editor-apply-btn",
+                                            color="primary",
+                                        ),
+                                    ),
+                                ],
+                            )
+                        ],
+                    ),
                 ],
             ),
         ],

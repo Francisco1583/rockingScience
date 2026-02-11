@@ -12,6 +12,8 @@ EXPECTED_FIELDS = {
     "velocity_mps": "float (meters per second)",
     "heading_deg": "float (0-360 degrees)",
     "distance_m": "float (meters)",
+    "temperature_c": "float (celsius)",
+    "pressure_hpa": "float (hPa)",
     "status": "str (COUNTDOWN, T_PLUS, etc)",
 }
 

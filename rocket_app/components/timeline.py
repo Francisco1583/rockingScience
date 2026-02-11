@@ -8,10 +8,12 @@ def timeline_container():
 def timeline_items(current_status):
     steps = [
         ("COUNTDOWN", "Countdown"),
-        ("T_PLUS", "Ascent"),
-        ("MECO", "Main Engine Cutoff"),
+        ("ASCENT", "Ascent"),
         ("COAST", "Coast"),
-        ("DEPLOY", "Payload Deploy"),
+        ("APOGEE", "Apogee"),
+        ("DESCENT", "Descent"),
+        ("PARACHUTE", "Parachute"),
+        ("LANDING", "Landing"),
     ]
 
     active_key = current_status if current_status in {k for k, _ in steps} else "COUNTDOWN"

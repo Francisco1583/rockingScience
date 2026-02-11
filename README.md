@@ -8,7 +8,14 @@ python change_datasets.py
 
 Notes
 - The UI uses dummy telemetry until hardware integration is wired.
+- Analytics/Predictive expect time to be the first column in uploaded CSVs.
+- Predictive is a prototype risk scoring based on heuristics/anomalies, not a forecast.
 - The package lives in `rocket_app/` and is importable as `rocket_app`.
+
+CSV format (Analytics/Predictive)
+- First column is time (any name, numeric).
+- Remaining numeric columns are auto-plotted in Overview.
+- Recommended columns: time_s, altitude_m, velocity_mps, temperature_c, pressure_hpa, heading_deg.
 
 ---
 

@@ -8,6 +8,7 @@ from .dummy import (
     next_dummy,
     update_history,
 )
+from .csv_loader import load_dataframe_from_upload
 from .interface import EXPECTED_FIELDS, read_hardware_telemetry
 
 __all__ = [
@@ -19,6 +20,7 @@ __all__ = [
     "INITIAL_TELEMETRY",
     "next_dummy",
     "update_history",
+    "load_dataframe_from_upload",
     "EXPECTED_FIELDS",
     "read_hardware_telemetry",
 ]

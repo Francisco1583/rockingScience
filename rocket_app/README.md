@@ -1,12 +1,12 @@
-﻿Rocket App
+Rocket App
 ==========
 
 Overview
 --------
 Rocket App is a modular Dash UI with three pages:
-- Launch: telemetry cards, countdown, radar, timeline, sparklines.
-- Analytics: CSV/Excel upload and Plotly preview, plus Chart Editor.
-- Predictive: stub layout for future ML analysis.
+- Launch: telemetry cards, countdown, radar + 3D, timeline, live charts, CSV download.
+- Analytics: CSV/Excel upload, automatic overview plots, plus Chart Editor in a separate tab.
+- Predictive: demo "Risk Forecast Report" based on heuristics (not a real forecast).
 
 This version uses dummy telemetry only. Hardware integration is documented but not implemented.
 
@@ -15,9 +15,15 @@ How to run
 1) pip install -r requirements.txt
 2) pip install -r examples/requirements.txt
 3) pip install -e .
-4) python examples/change_datasets.py
+4) python change_datasets.py
 
 Then open http://127.0.0.1:1234
+
+CSV format (Analytics/Predictive)
+---------------------------------
+- First column is time (any name, numeric).
+- Remaining numeric columns are auto-plotted in Overview.
+- Recommended columns: time_s, altitude_m, velocity_mps, temperature_c, pressure_hpa, heading_deg.
 
 Project structure
 -----------------
@@ -26,9 +32,11 @@ rocket_app/
     routes.py
     components/
         radar.py
+        rocket_3d.py
         telemetry_cards.py
         countdown.py
         timeline.py
+        upload.py
         navigation.py
     pages/
         launch.py
@@ -37,10 +45,15 @@ rocket_app/
     data/
         dummy.py
         interface.py
+        csv_loader.py
     callbacks/
         telemetry.py
+        launch_charts.py
+        analytics_overview.py
+        analytics_editor.py
         radar.py
-        analytics.py
+        rocket_3d.py
+        predictive.py
     assets/
         rocket.css
     README.md
@@ -49,9 +62,8 @@ rocket_app/
 Dummy telemetry
 ---------------
 Data is generated in rocket_app/data/dummy.py.
-- next_dummy() simulates a simple ascent profile after T0.
-- Countdown starts at 10 seconds and latches to T+ at zero.
-- Fields are normalized and stored in telemetry_store.
+- next_dummy() simulates countdown and ascent with T0 latch.
+- History is buffered for charts and CSV download.
 
 Hardware integration (future)
 -----------------------------
@@ -71,6 +83,8 @@ Return a dict with these fields:
 - velocity_mps: float (meters per second)
 - heading_deg: float (0-360 degrees)
 - distance_m: float (meters)
+- temperature_c: float (celsius)
+- pressure_hpa: float (hPa)
 - status: str (COUNTDOWN, T_PLUS, etc)
 
 Units
@@ -79,23 +93,11 @@ Units
 - velocity_mps: meters per second
 - heading_deg: degrees
 - distance_m: meters
+- temperature_c: celsius
+- pressure_hpa: hPa
 - time_ms/time_tplus: milliseconds
 
-Example integration (future)
-----------------------------
-# rocket_app/data/interface.py
-# def read_hardware_telemetry():
-#     payload = hardware_client.read()
-#     return {
-#         "time_ms": payload.countdown_ms,
-#         "time_tplus": payload.tplus_ms,
-#         "altitude_m": payload.altitude_m,
-#         "velocity_mps": payload.velocity_mps,
-#         "heading_deg": payload.heading_deg,
-#         "distance_m": payload.distance_m,
-#         "status": payload.status,
-#     }
-
-Then update rocket_app/callbacks/telemetry.py:
-# updated = next_dummy(...)  ->  updated = read_hardware_telemetry()
-
+Predictive disclaimer
+---------------------
+Predictive is a prototype risk scoring based on heuristics/anomaly detection.
+It is NOT an official forecast.
